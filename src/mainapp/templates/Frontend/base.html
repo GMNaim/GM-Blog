@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+
+    {% block css %}
+        {% include 'frontend/partials/_style.html' %}
+    {% endblock  %}
+
+    <title>{% block title %}{% endblock %}</title>
+
+</head>
+
+<body>
+    <header class="header">
+        <!-- Nav Bar -->
+        {% include 'frontend/partials/_navbar.html' %}
+    </header>
+
+  {% block other %}
+        <div class="container">
+            <div class="row">
+                <!-- Main Contents-->
+                {% block content %} {% endblock content %}
+
+                <!--aside -->
+                {% block aside %}  {# using block here for not getting the aside properties in home page...#}
+                    {% include 'frontend/partials/_aside.html' %}
+                {% endblock aside %}
+
+            </div>
+        </div>
+    {% endblock other %}
+
+    {% block home-content %} {% endblock %}
+
+    <!-- Footer -->
+    {% include 'frontend/partials/_footer.html' %}
+
+    {% include 'frontend/partials/_scripts.html' %}
+</body>
+</html>

@@ -1,0 +1,132 @@
+{% extends 'backend/backend_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<!--<h1>{{ request.build_absolute_uri }}</h1>-->
+<!--<h1>{{ request.get_full_path }}</h1>-->
+<!--<h1>{{ request.path }}</h1>-->
+
+<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+<h2>{{ url.name }}</h2>
+
+
+<!-- Main Contents  -->
+<div class="col-md-12">
+    <div class="block">
+        <!-- Message from the view -->
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span area-hidden="true">&times;</span>
+            </button>
+            <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}SUCCESS{% else %}{{ message.tags|title }}{% endif %}!
+            </strong>{{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <!--  END Message from the view -->
+
+        <!-- Quick Post Title -->
+        <div class="block-title">
+            <h2>Write a <strong>Post</strong></h2>
+        </div>
+        <!-- END Quick Post Title -->
+
+        <!-- Quick Post FORM Content -->
+        <form id="form-validation" action="{% url 'create-post' %}" method="POST" class="form-horizontal"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Title -->
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="post_title"
+                       style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Title</label>
+                <div class="col-md-9">
+                    <input type="text" id="post_title" name="post_title" class="form-control"
+                           placeholder="Enter title.." onchange="autoFill()" value="{{ post_title }}">
+                </div>
+            </div>
+            <!-- Overview -->
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="post_overview"
+                       style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Post Overview</label>
+                <div class="col-md-9">
+                    <textarea id="post_overview" name="post_overview" rows="4" class="form-control"
+                              onchange="autoFill()"
+                              placeholder="Write some overview">{{ post_overview }}</textarea>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="post_main_content"
+                       style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Post Body Content</label>
+                <div class="col-md-9">
+                    <textarea id="post_main_content" name="post_main_content" rows="20" class="form-control"
+                              placeholder="Write the body of the post" onchange="autoFill()"></textarea>
+                </div>
+            </div>
+            <script>
+                CKEDITOR.replace('post_main_content');
+            </script>
+
+            <!-- Multi-select Category -->
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="post_categories"
+                       style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Category</label>
+                <div class="col-md-6">
+                    <select id="post_categories" name="post_categories" class="select-chosen form-control"
+                            data-placeholder="Choose Categories.." style="width: 150px;" multiple>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <!-- END Multi-select Category -->
+
+            <!-- Upload Thumbnail -->
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="post_thumbnail"
+                       style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Thumbnail</label>
+                <div class="col-md-9">
+                    <input type="file" id="post_thumbnail" name="post_thumbnail"
+                           class="form-control" onchange="autoFill()">
+                </div>
+            </div>
+            <!-- END Upload Thumbnail -->
+
+            <div class="form-group form-actions">
+                <button type="submit" class="btn btn-sm btn-primary">
+                    <i class="fa fa-check"></i> Publish
+                </button>
+                <button type="reset" class="btn btn-sm btn-warning">
+                    <i class="fa fa-repeat"></i> Reset
+                </button>
+            </div>
+        </form>
+        <!-- END Quick Post Content -->
+    </div>
+</div>
+
+<!-- END Main Contents  -->
+
+
+<!-- Js Function for automatic fill up the form if there any error on onchange -->
+<script>
+    function autoFill() {
+        // getting the values
+        let post_title = document.getElementById('post_title').value;
+        let post_overview = document.getElementById('post_overview').value;
+        let post_main_content = document.getElementById('post_main_content').value;
+        let post_thumbnail = document.getElementById('post_thumbnail');
+
+        // setting the values
+        document.getElementById('post_title').value = post_title;
+        document.getElementById('post_overview').value = post_overview;
+        document.getElementById('post_main_content').value = post_main_content;
+        document.getElementById('post_thumbnail').value = post_thumbnail;
+    }
+</script>
+{% endblock content %}

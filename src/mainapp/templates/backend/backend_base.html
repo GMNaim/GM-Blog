@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="no-js lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>Admin Panel</title>
+
+    <meta name="description"
+          content="ProUI is a Responsive Bootstrap Admin Template created by pixelcave and published on Themeforest.">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+
+    <!-- =========================================Stylesheets of backend =====================================-->
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'backend/css/bootstrap.min.css' %}">
+
+    <!-- Related styles of various icon packs and plugins -->
+    <link rel="stylesheet" href="{% static 'backend/css/plugins.css' %}">
+
+    <!-- The main stylesheet of this template. All Bootstrap overwrites are defined in here -->
+    <link rel="stylesheet" href="{% static 'backend/css/main.css' %}">
+
+    <!-- Include a specific file here from css/themes/ folder to alter the default theme of the template -->
+
+    <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
+    <link rel="stylesheet" href="{% static 'backend/css/themes.css' %}">
+
+    <!-- google font-->
+    <link href="https://fonts.googleapis.com/css?family=Lakki+Reddy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+
+    <!-- =========================================End Stylesheets of backend =====================================-->
+
+</head>
+<body>
+
+<!-- Page Wrapper -->
+<div id="page-wrapper">
+    <!-- Preloader -->
+    <!-- Preloader functionality (initialized in js/app.js) - pageLoading() -->
+    <div class="preloader themed-background">
+        <h1 class="push-top-bottom text-light text-center"><strong>Admin</strong>Panel</h1>
+        <div class="inner">
+            <h3 class="text-light visible-lt-ie10"><strong>Loading..</strong></h3>
+            <div class="preloader-spinner hidden-lt-ie10"></div>
+        </div>
+    </div>
+    <!-- END Preloader -->
+
+    <!-- Page Container -->
+
+    <div id="page-container" class="sidebar-partial sidebar-visible-lg sidebar-no-animations">
+
+        <!--====================================== Left sidebar =====================================-->
+        {% include 'backend/partials/_left_sidebar.html' %}
+        <!--====================================== END Left sidebar =====================================-->
+
+
+        <!-- Main Container -->
+        <div id="main-container">
+            <header class="navbar navbar-default">
+                <!-- Search Form -->
+                <form action="page_ready_search_results.html" method="post" class="navbar-form-custom"
+                      style="border: 1px solid black;">
+                    <div class="form-group">
+                        <input type="text" id="top-search" name="top-search" class="form-control" placeholder="Search..">
+                    </div>
+                </form>
+                <!-- END Search Form -->
+            </header>
+            <!-- Left Header Navigation -->
+            <ul class="nav navbar-nav-custom">
+                <!-- Main Sidebar Toggle Button -->
+                <li>
+                    <a href="javascript:void(0)" onclick="App.sidebar('toggle-sidebar');this.blur();">
+                        <i class="fa fa-bars fa-fw"></i>
+                    </a>
+                </li>
+                <!-- END Main Sidebar Toggle Button -->
+            </ul>
+            <!-- END Left Header Navigation -->
+            <!-- Page content -->
+            <div id="page-content" style="min-height: 1125px;">
+               <!--Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-top">
+                    <li>Forms</li>
+                    <li><a href="">General</a></li>
+                </ul>
+               <!--END Breadcrumb-->
+
+                <!-- Dashboard Header -->
+<div class="row">
+
+
+                <!-- ===========================  CONTENT ============================ -->
+                {% block content %}
+
+                {% endblock content %}
+                <!-- =========================== END  CONTENT ============================ -->
+</div>
+            </div>
+            <!-- END Page Content -->
+
+            <!-- Footer -->
+            <footer class="clearfix">
+                <div class="pull-right">
+                    Crafted with <i class="fa fa-heart text-danger"></i> by <a href="#" target="_blank">MyTeam</a>
+                </div>
+                <div class="pull-left">
+                    <span id="year-copy"></span> &copy;
+                </div>
+            </footer>
+            <!-- END Footer -->
+
+        </div>
+        <!-- END Main Container -->
+    </div>
+    <!-- END Page Container -->
+</div>
+<!-- END Page Wrapper -->
+
+
+<!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
+<a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+<script src="{% static 'backend/js/jquery.min.js' %}"></script>
+<script src="{% static 'backend/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'backend/js/plugins.js' %}"></script>
+<script src="{% static 'backend/js/app.js' %}"></script>
+
+<!-- ===================================scripts for form validation ==============================-->
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'backend/js/formsValidation.js' %}"></script>
+<script>$(function(){ FormsValidation.init(); });</script>
+</body>
+</html>

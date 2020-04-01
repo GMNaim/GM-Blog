@@ -1,0 +1,152 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+{% block title %} 'Post Details'{% endblock title %}
+{% block content %}
+
+<style>
+    .post-single img {
+        width: 100%;
+    }
+</style>
+    <!-- Latest Posts -->
+    <main class="post blog-post col-lg-8">
+        <div class="container">
+            <!-- Message from the view -->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible text-center" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span area-hidden="true">&times;</span>
+                </button>
+                <strong>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}SUCCESS{% else %}{{ message.tags|title }}{% endif %}!
+                </strong>{{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <!--  END Message from the view -->
+            <div class="post-single">
+                <div class="post-thumbnail"><img src={{ post.thumbnail.url }} alt="..." class="img-fluid">
+                </div>
+                <div class="post-details">
+                    <div class="post-meta d-flex justify-content-between">
+                        <div class="category">
+                            {% for category in post.categories.all %}
+                                <a href="#">{{ category }}</a>
+                            {% endfor %}
+                    </div>
+
+                    </div>
+                    <h1>{{ post.post_title }}
+                        <a href="{{post.get_absolute_url}}">
+                        <i class="fa fa-bookmark-o"></i></a>
+                    </h1>
+
+                    <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                        <a href="#" class="author d-flex align-items-center flex-wrap">
+                        <div class="avatar"><img src="{{ post.posted_by.profile.profile_picture.url }}" alt="..." class="img-fluid"></div>
+                        <div class="title"><span>{{ post.posted_by }}</span></div>
+                    </a>
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="date"><i class="icon-clock"></i> {{ post.publish_date }}</div>
+                            <div class="views"><i class="icon-eye"></i> 500</div>
+                            <div class="comments meta-last">
+                                <i class="icon-comment"></i>
+                                {{ post.comments_count }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        {{ post.main_content | safe}}
+
+                    </div>
+                    <div class="post-tags"><a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a
+                            href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a></div>
+                    <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+                        {% if previous_post == None%}
+                            <div></div>
+                        {% else %}
+                        <a href="{% url 'post-details' pk=previous_post.id %}" class="prev-post text-left d-flex align-items-center">
+                        <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+                        <div class="text"><strong class="text-primary">Previous Post </strong>
+                            <h6>{{ previous_post }}</h6>
+                        </div>
+                        </a>
+                        {% endif %}
+
+                        {% if next_post == None%}
+                        <div></div>
+                        {% else %}
+                        <a href="{% url 'post-details' pk=next_post.id %}" class="next-post text-right d-flex align-items-center justify-content-end">
+                            <div class="text"><strong class="text-primary">Next Post </strong>
+                                <h6>{{ next_post }}</h6>
+                            </div>
+                            <div class="icon next"><i class="fa fa-angle-right"> </i></div>
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                    <!--Post Comments-->
+
+                    <div class="post-comments">
+                        <header>
+                            <!-- Here we use comments.count. it is django ORM.
+                             We are using the Django ORM in the template, executing the QuerySet post.comments.count()-->
+                            <!--The {#{% with %}#} tag allows us to assign a value to a new variable that will be-->
+                            <!--available to be used until the {#{% endwith %}#} tag-->
+                            <!-- The {#{% with %}#} template tag is useful to avoid hitting the database or accessing-->
+                             <!--expensive methods multiple times.-->
+                            {% with comments.count as total_comments %}
+                            <h3 class="h6">Post Comment{{ total_comments | pluralize}}
+                                <span class="no-of-comments">({{ total_comments }})</span></h3>
+                            {% endwith %}
+                        </header>
+                        {% for comment in comments %}
+                        <div class="comment">
+                            <div class="comment-header d-flex justify-content-between">
+                                <div class="user d-flex align-items-center">
+                                    <div class="image"><img src="" alt="..."
+                                                            class="img-fluid rounded-circle"></div>
+                                    <div class="title"><strong>{{ comment.commented_by }}</strong>
+                                        <span class="date">{{ comment.created }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                <p>{{ comment.message | linebreaks }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="add-comment">
+                        <header>
+                            <h3 class="h6">Leave a reply</h3>
+                        </header>
+                        <form action="#" class="commenting-form">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <input type="text" name="username" id="username" placeholder="Name"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="email" name="username" id="useremail"
+                                           placeholder="Email Address (will not be published)" class="form-control">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <textarea name="usercomment" id="usercomment" placeholder="Type your comment"
+                                              class="form-control"></textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-secondary">Submit Comment</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock content %}
