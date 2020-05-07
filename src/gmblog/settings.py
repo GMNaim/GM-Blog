@@ -57,6 +57,22 @@ INSTALLED_APPS = [
 
 CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"  # this path is for upload file by ckeditor in the media folder
 
+CKEDITOR_CONFIGS = {
+
+    'special': {
+        'skin': 'moono',
+        'toolbar': 'Special',
+        'height': 100,
+        'toolbar_Special': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            ['Link', 'CodeSnippet'],
+        ],
+        'extraPlugins': 'codesnippet'
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -32,7 +32,7 @@
                     <div class="post-meta d-flex justify-content-between">
                         <div class="category">
                             {% for category in post.categories.all %}
-                                <a href="#">{{ category }}</a>
+                                <a href="{% url 'categorized-post' category %}">{{ category }}</a>
                             {% endfor %}
                     </div>
 
@@ -48,7 +48,7 @@
                         <div class="title"><span>{{ post.posted_by }}</span></div>
                     </a>
                         <div class="d-flex align-items-center flex-wrap">
-                            <div class="date"><i class="icon-clock"></i> {{ post.publish_date }}</div>
+                            <div class="date"><i class="icon-clock"></i> {{ post.modified }}</div>
                             <div class="views"><i class="icon-eye"></i> 500</div>
                             <div class="comments meta-last">
                                 <i class="icon-comment"></i>
@@ -60,8 +60,16 @@
                         {{ post.main_content | safe}}
 
                     </div>
-                    <div class="post-tags"><a href="#" class="tag">#Business</a><a href="#" class="tag">#Tricks</a><a
-                            href="#" class="tag">#Financial</a><a href="#" class="tag">#Economy</a></div>
+
+                                    <!--TAGS-->
+                    <div class="post-tags">
+                        {% for tag in  tag_list %}
+                        <a href="{% url 'tagged-post' tag %}" class="tag">#{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+
+
+
                     <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
                         {% if previous_post == None%}
                             <div></div>
@@ -114,7 +122,7 @@
                                 </div>
                             </div>
                             <div class="comment-body">
-                                <p>{{ comment.message | linebreaks }}</p>
+                                <p>{{ comment.message | safe }}</p>
                             </div>
                         </div>
                         {% endfor %}
@@ -124,24 +132,41 @@
                         <header>
                             <h3 class="h6">Leave a reply</h3>
                         </header>
-                        <form action="#" class="commenting-form">
+                        <form action="{{ post.get_absolute_url }}" class="commenting-form" method="POST">
+                            {% csrf_token %}
+
+
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <input type="text" name="username" id="username" placeholder="Name"
-                                           class="form-control">
+                                <div class="form-group col-md-6 list-unstyled">
+                                    {{ comment_form.media }}
+
+                                    <label class="col-md-1 form-check-label"
+                                           for="{{ comment_form.commented_by.id_for_label }}"
+                                           style="padding: 0; width: 7%; font-size: 15px; text-align: left;">
+                                        Name: </label>
+                                    {{ comment_form.commented_by }}
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <input type="email" name="username" id="useremail"
-                                           placeholder="Email Address (will not be published)" class="form-control">
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <textarea name="usercomment" id="usercomment" placeholder="Type your comment"
-                                              class="form-control"></textarea>
+                                    <label class="col-md-1 form-check-label"
+                                           for="{{ comment_form.commentor_email.id_for_label }}"
+                                           style="padding: 0; width: 7%; font-size: 15px; text-align: left;">
+                                        Email: </label>
+                                    {{ comment_form.commentor_email }}
+
+                                    </div>
+                                <div class="form-group col-md-4">
+                                    <label class="col-md-1 form-check-label"
+                                           for="{{ comment_form.message.id_for_label }}"
+                                           style="padding: 0; width: 7%; font-size: 15px; text-align: left;">
+                                        Comment: </label>
+                                    {{ comment_form.message }}
+
                                 </div>
                                 <div class="form-group col-md-12">
                                     <button type="submit" class="btn btn-secondary">Submit Comment</button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>

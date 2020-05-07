@@ -1,0 +1,137 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+{% block title %} 'blog' {% endblock title %}
+{% block content %}
+
+<style>
+    .post-thumbnail  {
+        width: 100%;
+    }
+</style>
+        <!-- Latest Posts -->
+        <main class="posts-listing col-lg-8">
+            <div class="container">
+                <div class="row">
+                {% if post_list_with_page_number %}
+                    <!-- post -->
+                    {% for single_post in post_list_with_page_number %}
+
+                    <div class="post col-xl-6" style="margin-right: 0px">
+                        <div class="post-thumbnail"><a href="{{ single_post.get_absolute_url }}">
+                            <img src="{{ single_post.thumbnail.url }}" alt="post thumbnail" class="img-fluid"></a>
+                        </div>
+                        <div class="post-details">
+                            <div class="post-meta d-flex justify-content-between">
+                                <div class="category">
+                                {% for catagories in single_post.categories.all %}
+                                    <a href="#">{{ catagories }}</a>
+                                {% endfor %}
+                                </div>
+                            </div>
+                            <div class="comment meta-last" style="color: #999; font-size: 15px;">
+                                <i class="icon-clock"></i>{{ single_post.modified | timesince }} ago
+                            </div>
+                            <a href="{{single_post.get_absolute_url}}">
+                            <h3 class="h4">{{ single_post.post_title }}</h3></a>
+                                <p class="text-muted"> {{ single_post.overview }}</p>
+                            <footer class="post-footer d-flex align-items-center"
+                                    style="justify-content: space-between;
+                                    border-top: 1px solid #e0dbdb;
+                                    border-bottom: 1px solid #e0dbdb;
+                                    padding: 5px 16px 5px 5px;
+                                    margin: 8px 3px;">
+                                <a href="#" class="author d-flex align-items-center flex-wrap">
+                                <div class="avatar"><img src="{{ single_post.posted_by.profile.profile_picture.url }}" alt="..." class="img-fluid"></div>
+                                <div class="title"><span>{{ single_post.posted_by.username }}</span></div></a>
+                                <div class="comments"><i class=""></i>{{ single_post.comments_count }}</div>
+                                <div class="comments meta-last"><i class="icon-comment"></i>{{ single_post.comments_count }}</div>
+                            </footer>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-12">
+                        <p>No Post is available</p>
+
+                    </div>
+                {% endif %}
+                </div>
+
+                <!--=================== Pagination ============================-->
+
+                <nav aria-label="Page navigation example">
+                {% if post_list_with_page_number.has_other_pages %}
+                    <ul class="pagination pagination-template d-flex justify-content-center">
+
+                        {# ====== For previous Page  ======= #}
+                        {% if post_list_with_page_number.has_previous %}
+                            <li class="page-item">
+                                <a href="?page=1" class="page-link" style="padding-top: 6px;">
+                                    <i class="fa fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a href="?page={{ post_list_with_page_number.previous_page_number }}" class="page-link"
+                                   style="padding-top: 6px;">
+                                    <i class="fa fa-angle-left"></i>
+                                </a>
+
+                            </li>
+
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link disabled" style="padding-top: 6px;"><i class="fa fa-angle-double-left"></i></a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link disabled" style="padding-top: 6px;"><i class="fa fa-angle-left"></i></a>
+                            </li>
+                        {% endif %}
+                        {# =====For middle pages ==========#}
+                        {% for page_number in post_list_with_page_number.paginator.page_range %}
+                            {% if page_number == post_list_with_page_number.number %}
+                                <li class="page-item">
+                                    <a class="page-link active" style="padding-top: 6px;">{{ page_number }}</a>
+                                </li>
+                            {% elif  page_number > post_list_with_page_number.number|add:'-2' and page_number < post_list_with_page_number.number|add:'2'%}
+                                <li class="page-item">
+                                    <a href="?page={{ page_number }}" class="page-link" style="padding-top: 6px;">{{ page_number }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        {# ======For next pages and last page========== #}
+                        {% if post_list_with_page_number.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{ post_list_with_page_number.next_page_number }}" class="page-link"
+                                   style="padding-top: 6px;">
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                            {#  post_list_with_page_number.paginator.num_pages print the total number of the page.#}
+                            {# That means it has the last page number. So, if I want to go to the last page number use this.#}
+                            {# That means using "post_list_with_page_number.paginator.num_pages" in the link.#}
+
+                                <a href="?page={{ post_list_with_page_number.paginator.num_pages }}"
+                                   class="page-link" style="padding-top: 6px;">
+                                    <i class="fa fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link disabled" style="padding-top: 6px;">
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <a class="page-link disabled">
+                                <i class="fa fa-angle-double-right" style="padding-top: 6px;"></i>
+                            </a>
+                        {% endif %}
+                        </ul>
+
+                {% endif %}
+                </nav>
+                <!--=================== Pagination END ============================-->
+            </div>
+        </main>
+{% endblock %}
+

@@ -41,7 +41,7 @@
             <h3 class="h6">Categories</h3>
         </header>
         {% for category in categories %}
-        <div class="item d-flex justify-content-between"><a href="#">{{ category.category_name }}</a>
+        <div class="item d-flex justify-content-between"><a href="{% url 'categorized-post' category %}">{{ category.category_name }}</a>
             <span>{{ category.category_wise_post_count }}</span></div>
         {% endfor %}
     </div>

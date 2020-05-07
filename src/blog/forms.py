@@ -1,7 +1,9 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from .models import Post
+from .models import Post, Comment
+from ckeditor.fields import RichTextField
+from ckeditor.widgets import CKEditorWidget
 
 
 class PostCreationForm(forms.ModelForm):
@@ -33,3 +35,16 @@ class PostCreationForm(forms.ModelForm):
 
         }
 
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['commented_by', 'commentor_email', 'message']
+
+
+        widgets = {
+            'commented_by': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Write your name...'}),
+            'commentor_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Write your email...'}),
+            'message': forms.Textarea(attrs={'class': 'form-control list-unstyled', 'placeholder': 'Write your comment...'})
+        }

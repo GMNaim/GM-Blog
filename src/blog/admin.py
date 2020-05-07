@@ -8,12 +8,12 @@ from .models import Post, Like, Comment
 
 class PostAdmin(admin.ModelAdmin):
     # inlines = [PostImageInline]
-    list_display = ('id', 'post_title', 'posted_by', 'is_approved', 'featured_post', 'publish_date', 'created',)
+    list_display = ('id', 'post_title', 'posted_by', 'is_approved', 'featured_post', 'created',)
     list_display_links = ('post_title', 'id')
     list_editable = ('is_approved', 'featured_post')
-    fields = ('post_title', 'overview', 'posted_by', 'main_content', 'categories', 'is_approved', 'featured_post',
-              'slug', 'thumbnail', 'publish_date')
-    search_fields = ('post_title', 'message', 'publish_date')
+    fields = ('post_title', 'overview', 'posted_by', 'main_content', 'categories', 'tagname', 'is_approved', 'featured_post',
+              'slug', 'thumbnail')
+    search_fields = ('post_title', 'message', 'overview', 'posted_by')
 
 
 class LikeAdmin(admin.ModelAdmin):
@@ -22,8 +22,9 @@ class LikeAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'comment_for_the_post')
+    list_display = ('id', 'comment_for_the_post', 'commented_by', 'is_active')
     list_display_links = ('id', 'comment_for_the_post')
+    list_editable = ('is_active',)
 
 
 admin.site.register(Post, PostAdmin)

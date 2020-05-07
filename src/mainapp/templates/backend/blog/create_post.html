@@ -1,12 +1,21 @@
 {% extends 'backend/backend_base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+
+{% block ckeditor-script %}
+
+<!--<script src="https://cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>-->
+
+<!--<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>-->
+<script type="text/javascript" src="{% static 'backend/ckeditor/ckeditor.js' %}"></script>
+{% endblock ckeditor-script %}
+
 {% block content %}
 <!--<h1>{{ request.build_absolute_uri }}</h1>-->
 <!--<h1>{{ request.get_full_path }}</h1>-->
 <!--<h1>{{ request.path }}</h1>-->
 
-<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+
 <h2>{{ url.name }}</h2>
 
 
@@ -63,12 +72,13 @@
                 <label class="col-md-1 control-label" for="post_main_content"
                        style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Post Body Content</label>
                 <div class="col-md-9">
-                    <textarea id="post_main_content" name="post_main_content" rows="20" class="form-control"
-                              placeholder="Write the body of the post" onchange="autoFill()"></textarea>
+                    <textarea type="text" id="post_main_content" name="post_mainContent" rows="30" class="form-control"
+                              placeholder="Write the body of the post" ></textarea>
                 </div>
             </div>
             <script>
-                CKEDITOR.replace('post_main_content');
+                let  editor = CKEDITOR.replace('post_mainContent');
+                CK
             </script>
 
             <!-- Multi-select Category -->
@@ -85,6 +95,15 @@
                 </div>
             </div>
             <!-- END Multi-select Category -->
+            <!--TAGS-->
+            <div class="form-group">
+                <label class="col-md-1 control-label" for="post_tags"
+                       style="padding: 0; width: 7%; font-size: 15px; text-align: left;">Tags</label>
+                <div class="col-md-4">
+                    <textarea type="text" id="post_tags" name="post_tags" rows="2" class="form-control"
+                              placeholder="Write some text seperated by comma." ></textarea>
+                </div>
+            </div>
 
             <!-- Upload Thumbnail -->
             <div class="form-group">
@@ -95,6 +114,7 @@
                            class="form-control" onchange="autoFill()">
                 </div>
             </div>
+
             <!-- END Upload Thumbnail -->
 
             <div class="form-group form-actions">

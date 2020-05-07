@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                             <div class="comment meta-last" style="color: #999; font-size: 15px;">
-                                <i class="icon-clock"></i>{{ single_post.publish_date | timesince }} ago
+                                <i class="icon-clock"></i>{{ single_post.modified | timesince }} ago
                             </div>
                             <a href="{{single_post.get_absolute_url}}">
                             <h3 class="h4">{{ single_post.post_title }}</h3></a>

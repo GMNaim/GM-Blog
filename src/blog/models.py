@@ -19,7 +19,8 @@ class TimeStampedModel(models.Model):
 
 
 class Postable(TimeStampedModel):
-    message = RichTextField()  # ckeditor component
+    # ckeditor_uploader component
+    message = RichTextField(config_name='special')
 
     class Meta:
         abstract = True
@@ -29,12 +30,12 @@ class Post(Postable):
     """ Post table """
     post_title = models.TextField()  # The form field’s label is set to the verbose_name of the model field, with the first character capitalized.
     posted_by = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
-    publish_date = models.DateTimeField(default=timezone.now())
     is_approved = models.BooleanField(default=True)
     slug = models.SlugField(max_length=100, default='-')
     categories = models.ManyToManyField(Category, related_name='categories')  # there can be more than one category for one post
+    tagname = models.TextField(max_length=50, default='')
     overview = models.TextField(max_length=300, default='')
-    main_content = RichTextUploadingField()  # ckeditor_uploader component...
+    main_content = models.TextField(default='')  # ckeditor_uploader component...
     featured_post = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='blog_pics/%Y/%m/%d')
 
@@ -83,8 +84,11 @@ class Like(models.Model):
 
 class Comment(Postable):
     """ Comment table"""
-    commented_by = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    # commented_by = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    commented_by = models.CharField(max_length=100, verbose_name='Name')
+    commentor_email = models.EmailField(verbose_name='Email')
     comment_for_the_post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Comment by {self.commented_by} for post {self.comment_for_the_post}"
